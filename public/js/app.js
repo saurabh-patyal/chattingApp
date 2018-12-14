@@ -43492,8 +43492,24 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     components: { messageComponent: __WEBPACK_IMPORTED_MODULE_0__messageComponent___default.a },
-    mounted: function mounted() {
-        console.log('Component mounted.');
+    data: function data() {
+        return {
+            friends: []
+        };
+    },
+
+
+    methods: {
+        getFriends: function getFriends() {
+            var _this = this;
+
+            axios.post('/getFriends').then(function (res) {
+                return _this.friends = res.data.data;
+            });
+        }
+    },
+    created: function created() {
+        this.getFriends();
     }
 });
 
@@ -43507,36 +43523,42 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "container" }, [
     _c("div", { staticClass: "row" }, [
-      _vm._m(0),
+      _c("div", { staticClass: "col-md-3 " }, [
+        _c("div", { staticClass: "panel panel-default" }, [
+          _c("div", { staticClass: "panel-heading" }, [_vm._v("Friend List")]),
+          _vm._v(" "),
+          _c("div", { staticClass: "panel-body" }, [
+            _c(
+              "ul",
+              { staticClass: "list-group" },
+              _vm._l(_vm.friends, function(friend) {
+                return _c(
+                  "a",
+                  {
+                    attrs: { href: "" },
+                    on: {
+                      click: function($event) {
+                        $event.preventDefault()
+                      }
+                    }
+                  },
+                  [
+                    _c("li", { staticClass: "list-group-item" }, [
+                      _vm._v(_vm._s(friend.name))
+                    ])
+                  ]
+                )
+              })
+            )
+          ])
+        ])
+      ]),
       _vm._v(" "),
       _c("div", { staticClass: "col-md-9" }, [_c("message-component")], 1)
     ])
   ])
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "col-md-3 " }, [
-      _c("div", { staticClass: "panel panel-default" }, [
-        _c("div", { staticClass: "panel-heading" }, [
-          _vm._v("Private chat App")
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "panel-body" }, [
-          _c("ul", { staticClass: "list-group" }, [
-            _c("li", { staticClass: "list-group-item" }, [
-              _vm._v("Cras justo odio")
-            ]),
-            _vm._v(" "),
-            _c("li", { staticClass: "list-group-item" }, [_vm._v("saurabh")])
-          ])
-        ])
-      ])
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {

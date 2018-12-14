@@ -3,13 +3,13 @@
         <div class="row">
             <div class="col-md-3 ">
                 <div class="panel panel-default">
-                    <div class="panel-heading">Private chat App</div>
+                    <div class="panel-heading">Friend List</div>
 
                     <div class="panel-body">
                         
                          <ul class="list-group">
-                              <li class="list-group-item">Cras justo odio</li>
-                              <li class="list-group-item">saurabh</li>
+                              <a href="" v-for="friend in friends" @click.prevent=""><li class="list-group-item" >{{friend.name}}</li>
+                              </a>
                               
                             </ul>
                         
@@ -29,8 +29,20 @@
 
     export default {
         components:{messageComponent},
-        mounted() {
-            console.log('Component mounted.')
+        data(){
+            return{
+                friends:[]
+            }
+        },
+    
+    methods:{
+        getFriends(){
+            axios.post('/getFriends').then(res=>this.friends=res.data.data)
         }
-    }
+    },
+    created(){
+        this.getFriends()
+    },
+
+}
 </script>
