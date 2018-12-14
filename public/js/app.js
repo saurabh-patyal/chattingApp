@@ -979,6 +979,7 @@ module.exports = __webpack_require__(42);
 __webpack_require__(11);
 
 window.Vue = __webpack_require__(35);
+Vue.use(__webpack_require__(63));
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -43485,6 +43486,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
 
 
@@ -43526,7 +43528,9 @@ var staticRenderFns = [
           _c("ul", { staticClass: "list-group" }, [
             _c("li", { staticClass: "list-group-item" }, [
               _vm._v("Cras justo odio")
-            ])
+            ]),
+            _vm._v(" "),
+            _c("li", { staticClass: "list-group-item" }, [_vm._v("saurabh")])
           ])
         ])
       ])
@@ -43628,7 +43632,7 @@ exports = module.exports = __webpack_require__(45)(false);
 
 
 // module
-exports.push([module.i, "\n.chat-box{\r\n\theight:400px\n}\r\n", ""]);
+exports.push([module.i, "\n.chat-box{\r\n\theight:300px;\n}\n.panel-body{\r\n\toverflow-y:scroll;\n}\r\n", ""]);
 
 // exports
 
@@ -43921,21 +43925,63 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
-      chats: []
+      chats: [],
+      open: true,
+      session_block: false
     };
   },
 
   methods: {
     send: function send() {
       console.log('sended message');
+    },
+    close: function close() {
+      this.open = false;
+    },
+    clear: function clear() {
+      this.chats = [];
+    },
+    block: function block() {
+      this.session_block = true;
+    },
+    unblock: function unblock() {
+      this.session_block = false;
     }
   },
   created: function created() {
-    this.chats.push({ message: 'hey hi' }, { message: 'hey how r you' }, { message: 'hey how r you' }, { message: 'hey how r you' }, { message: 'hey how r you' }, { message: 'hey how r you' }, { message: 'hey how r you' }, { message: 'hey how r you' }, { message: 'hey how r you' }, { message: 'hey how r you' }, { message: 'hey how r you' }, { message: 'hey how r you' });
+    this.chats.push({ message: 'hey hi' }, { message: 'hey how r you' }, { message: 'hey how r you' }, { message: 'bottom chat3' }, { message: 'bottom chat3' }, { message: 'bottom chat3' }, { message: 'current message' });
   }
 });
 
@@ -43947,45 +43993,155 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "panel panel-default " }, [
-    _c("div", { staticClass: "panel-heading " }, [_vm._v("Message Window")]),
-    _vm._v(" "),
-    _c(
-      "div",
-      { staticClass: "panel-body chat-box" },
-      _vm._l(_vm.chats, function(chat) {
-        return _c("p", { key: chat.message, staticClass: "panel-text" }, [
-          _vm._v(_vm._s(chat.message))
-        ])
-      })
-    ),
-    _vm._v(" "),
-    _c(
-      "form",
-      {
-        staticClass: "panel-footer",
-        on: {
-          submit: function($event) {
-            $event.preventDefault()
-            return _vm.send($event)
-          }
-        }
-      },
-      [_vm._m(0)]
-    )
-  ])
+  return _vm.open
+    ? _c("div", { staticClass: "panel panel-default " }, [
+        _c("div", { staticClass: "panel-heading \r\n                    " }, [
+          _c("b", { class: { "text-danger": _vm.session_block } }, [
+            _vm._v(
+              "\r\n                    \tUsername\r\n                    \t"
+            ),
+            _vm.session_block ? _c("span", [_vm._v("(Blocked)")]) : _vm._e()
+          ]),
+          _vm._v(" "),
+          _c(
+            "a",
+            {
+              attrs: { href: "" },
+              on: {
+                click: function($event) {
+                  $event.preventDefault()
+                  return _vm.close($event)
+                }
+              }
+            },
+            [
+              _c("i", {
+                staticClass: "fa fa-times pull-right ",
+                attrs: { "aria-hidden": "true " }
+              })
+            ]
+          ),
+          _vm._v(" "),
+          _c("div", { staticClass: "dropdown mr-4 pull-right" }, [
+            _vm._m(0),
+            _vm._v(" "),
+            _c(
+              "ul",
+              {
+                staticClass: "dropdown-menu",
+                attrs: { "aria-labelledby": "dropdownMenu1" }
+              },
+              [
+                _vm.session_block
+                  ? _c("li", [
+                      _c(
+                        "a",
+                        {
+                          attrs: { href: "#" },
+                          on: {
+                            click: function($event) {
+                              $event.preventDefault()
+                              return _vm.unblock($event)
+                            }
+                          }
+                        },
+                        [_vm._v(" UnBlock")]
+                      )
+                    ])
+                  : _c("li", [
+                      _c(
+                        "a",
+                        {
+                          attrs: { href: "#" },
+                          on: {
+                            click: function($event) {
+                              $event.preventDefault()
+                              return _vm.block($event)
+                            }
+                          }
+                        },
+                        [_vm._v("Block")]
+                      )
+                    ]),
+                _vm._v(" "),
+                _c("li", [
+                  _c(
+                    "a",
+                    {
+                      attrs: { href: "#" },
+                      on: {
+                        click: function($event) {
+                          $event.preventDefault()
+                          return _vm.clear($event)
+                        }
+                      }
+                    },
+                    [_vm._v("clear chat")]
+                  )
+                ])
+              ]
+            )
+          ])
+        ]),
+        _vm._v(" "),
+        _c(
+          "div",
+          {
+            directives: [{ name: "chat-scroll", rawName: "v-chat-scroll" }],
+            staticClass: "panel-body chat-box"
+          },
+          _vm._l(_vm.chats, function(chat) {
+            return _c("p", { key: chat.message, staticClass: "panel-text" }, [
+              _vm._v(_vm._s(chat.message))
+            ])
+          })
+        ),
+        _vm._v(" "),
+        _c(
+          "form",
+          {
+            staticClass: "panel-footer",
+            on: {
+              submit: function($event) {
+                $event.preventDefault()
+                return _vm.send($event)
+              }
+            }
+          },
+          [
+            _c("div", { staticClass: "form-group" }, [
+              _c("input", {
+                staticClass: "form-control ",
+                attrs: {
+                  type: "text",
+                  placeholder: "Write your message here",
+                  disabled: _vm.session_block
+                }
+              })
+            ])
+          ]
+        )
+      ])
+    : _vm._e()
 }
 var staticRenderFns = [
   function() {
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "form-group" }, [
-      _c("input", {
-        staticClass: "form-control ",
-        attrs: { type: "text", placeholder: "Write your message here" }
-      })
-    ])
+    return _c(
+      "a",
+      {
+        staticClass: " dropdown-toggle",
+        attrs: {
+          href: "",
+          "data-toggle": "dropdown",
+          "aria-haspopup": "true",
+          "aria-expanded": "true"
+        }
+      },
+      [_c("i", { staticClass: "fa fa-ellipsis-v  " })]
+    )
   }
 ]
 render._withStripped = true
@@ -43996,6 +44152,74 @@ if (false) {
     require("vue-hot-reload-api")      .rerender("data-v-1c753fcd", module.exports)
   }
 }
+
+/***/ }),
+/* 63 */
+/***/ (function(module, exports, __webpack_require__) {
+
+(function (global, factory) {
+	 true ? module.exports = factory() :
+	typeof define === 'function' && define.amd ? define(factory) :
+	(global['vue-chat-scroll'] = factory());
+}(this, (function () { 'use strict';
+
+/**
+* @name VueJS vChatScroll (vue-chat-scroll)
+* @description Monitors an element and scrolls to the bottom if a new child is added
+* @author Theodore Messinezis <theo@theomessin.com>
+* @file v-chat-scroll  directive definition
+*/
+
+var scrollToBottom = function scrollToBottom(el, smooth) {
+  if (typeof el.scroll === "function") {
+    el.scroll({
+      top: el.scrollHeight,
+      behavior: smooth ? 'smooth' : 'instant'
+    });
+  } else {
+    el.scrollTop = el.scrollHeight;
+  }
+};
+
+var vChatScroll = {
+  bind: function bind(el, binding) {
+    var scrolled = false;
+
+    el.addEventListener('scroll', function (e) {
+      scrolled = el.scrollTop + el.clientHeight + 1 < el.scrollHeight;
+    });
+
+    new MutationObserver(function (e) {
+      var config = binding.value || {};
+      var pause = config.always === false && scrolled;
+      if (pause || e[e.length - 1].addedNodes.length != 1) return;
+      scrollToBottom(el, config.smooth);
+    }).observe(el, { childList: true, subtree: true });
+  },
+  inserted: scrollToBottom
+};
+
+/**
+* @name VueJS vChatScroll (vue-chat-scroll)
+* @description Monitors an element and scrolls to the bottom if a new child is added
+* @author Theodore Messinezis <theo@theomessin.com>
+* @file vue-chat-scroll plugin definition
+*/
+
+var VueChatScroll = {
+  install: function install(Vue, options) {
+    Vue.directive('chat-scroll', vChatScroll);
+  }
+};
+
+if (typeof window !== 'undefined' && window.Vue) {
+  window.Vue.use(VueChatScroll);
+}
+
+return VueChatScroll;
+
+})));
+
 
 /***/ })
 /******/ ]);
