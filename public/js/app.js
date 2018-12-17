@@ -43487,30 +43487,59 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    components: { messageComponent: __WEBPACK_IMPORTED_MODULE_0__messageComponent___default.a },
-    data: function data() {
-        return {
-            friends: []
-        };
+  data: function data() {
+    return {
+      friends: []
+    };
+  },
+
+  methods: {
+    close: function close(friend) {
+      friend.session.open = false;
     },
+    getFriends: function getFriends() {
+      var _this = this;
 
-
-    methods: {
-        getFriends: function getFriends() {
-            var _this = this;
-
-            axios.post('/getFriends').then(function (res) {
-                return _this.friends = res.data.data;
-            });
-        }
+      axios.post("/getFriends").then(function (res) {
+        _this.friends = res.data.data;
+      });
     },
-    created: function created() {
-        this.getFriends();
+    openChat: function openChat(friend) {
+      if (friend.session) {
+        this.friends.forEach(function (friend) {
+
+          friend.session.open = false;
+        });
+
+        friend.session.open = true;
+      } else {
+        this.createSession(friend);
+      }
+    },
+    createSession: function createSession(friend) {
+      axios.post("/session/create", { friend_id: friend.id }).then(function (res) {
+        return friend.session = res.data;
+      });
     }
+  },
+  created: function created() {
+    this.getFriends();
+  },
+
+  components: { messageComponent: __WEBPACK_IMPORTED_MODULE_0__messageComponent___default.a }
 });
 
 /***/ }),
@@ -43539,6 +43568,7 @@ var render = function() {
                     on: {
                       click: function($event) {
                         $event.preventDefault()
+                        _vm.openChat(friend)
                       }
                     }
                   },
@@ -43554,7 +43584,23 @@ var render = function() {
         ])
       ]),
       _vm._v(" "),
-      _c("div", { staticClass: "col-md-9" }, [_c("message-component")], 1)
+      _c(
+        "div",
+        _vm._l(_vm.friends, function(friend) {
+          return friend.session
+            ? _c(
+                "span",
+                { staticClass: "col-md-9" },
+                [
+                  friend.session.open
+                    ? _c("message-component", { attrs: { friend: friend } })
+                    : _vm._e()
+                ],
+                1
+              )
+            : _vm._e()
+        })
+      )
     ])
   ])
 }
@@ -43977,10 +44023,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 
 /* harmony default export */ __webpack_exports__["default"] = ({
+  props: ['friend'],
   data: function data() {
     return {
       chats: [],
-      open: true,
+
       session_block: false
     };
   },
@@ -43989,8 +44036,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     send: function send() {
       console.log('sended message');
     },
-    close: function close() {
-      this.open = false;
+    close: function close(friend) {
+      friend.session.open = false;
     },
     clear: function clear() {
       this.chats = [];
@@ -44015,78 +44062,48 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm.open
-    ? _c("div", { staticClass: "panel panel-default " }, [
-        _c("div", { staticClass: "panel-heading \r\n                    " }, [
-          _c("b", { class: { "text-danger": _vm.session_block } }, [
-            _vm._v(
-              "\r\n                    \tUsername\r\n                    \t"
-            ),
-            _vm.session_block ? _c("span", [_vm._v("(Blocked)")]) : _vm._e()
-          ]),
-          _vm._v(" "),
-          _c(
-            "a",
-            {
-              attrs: { href: "" },
-              on: {
-                click: function($event) {
-                  $event.preventDefault()
-                  return _vm.close($event)
-                }
-              }
-            },
-            [
-              _c("i", {
-                staticClass: "fa fa-times pull-right ",
-                attrs: { "aria-hidden": "true " }
-              })
-            ]
-          ),
-          _vm._v(" "),
-          _c("div", { staticClass: "dropdown mr-4 pull-right" }, [
-            _vm._m(0),
-            _vm._v(" "),
-            _c(
-              "ul",
-              {
-                staticClass: "dropdown-menu",
-                attrs: { "aria-labelledby": "dropdownMenu1" }
-              },
-              [
-                _vm.session_block
-                  ? _c("li", [
-                      _c(
-                        "a",
-                        {
-                          attrs: { href: "#" },
-                          on: {
-                            click: function($event) {
-                              $event.preventDefault()
-                              return _vm.unblock($event)
-                            }
-                          }
-                        },
-                        [_vm._v(" UnBlock")]
-                      )
-                    ])
-                  : _c("li", [
-                      _c(
-                        "a",
-                        {
-                          attrs: { href: "#" },
-                          on: {
-                            click: function($event) {
-                              $event.preventDefault()
-                              return _vm.block($event)
-                            }
-                          }
-                        },
-                        [_vm._v("Block")]
-                      )
-                    ]),
-                _vm._v(" "),
-                _c("li", [
+  return _c("div", { staticClass: "panel panel-default " }, [
+    _c("div", { staticClass: "panel-heading \r\n                    " }, [
+      _c("b", { class: { "text-danger": _vm.session_block } }, [
+        _vm._v(
+          "\r\n                    \t" +
+            _vm._s(_vm.friend.name) +
+            "\r\n                    \t"
+        ),
+        _vm.session_block ? _c("span", [_vm._v("(Blocked)")]) : _vm._e()
+      ]),
+      _vm._v(" "),
+      _c(
+        "a",
+        {
+          attrs: { href: "" },
+          on: {
+            click: function($event) {
+              $event.preventDefault()
+              _vm.close(_vm.friend)
+            }
+          }
+        },
+        [
+          _c("i", {
+            staticClass: "fa fa-times pull-right ",
+            attrs: { "aria-hidden": "true " }
+          })
+        ]
+      ),
+      _vm._v(" "),
+      _c("div", { staticClass: "dropdown mr-4 pull-right" }, [
+        _vm._m(0),
+        _vm._v(" "),
+        _c(
+          "ul",
+          {
+            staticClass: "dropdown-menu",
+            attrs: { "aria-labelledby": "dropdownMenu1" }
+          },
+          [
+            _vm.session_block
+              ? _c("li", [
                   _c(
                     "a",
                     {
@@ -44094,57 +44111,87 @@ var render = function() {
                       on: {
                         click: function($event) {
                           $event.preventDefault()
-                          return _vm.clear($event)
+                          return _vm.unblock($event)
                         }
                       }
                     },
-                    [_vm._v("clear chat")]
+                    [_vm._v(" UnBlock")]
                   )
                 ])
-              ]
-            )
-          ])
-        ]),
-        _vm._v(" "),
-        _c(
-          "div",
-          {
-            directives: [{ name: "chat-scroll", rawName: "v-chat-scroll" }],
-            staticClass: "panel-body chat-box"
-          },
-          _vm._l(_vm.chats, function(chat) {
-            return _c("p", { key: chat.message, staticClass: "panel-text" }, [
-              _vm._v(_vm._s(chat.message))
-            ])
-          })
-        ),
-        _vm._v(" "),
-        _c(
-          "form",
-          {
-            staticClass: "panel-footer",
-            on: {
-              submit: function($event) {
-                $event.preventDefault()
-                return _vm.send($event)
-              }
-            }
-          },
-          [
-            _c("div", { staticClass: "form-group" }, [
-              _c("input", {
-                staticClass: "form-control ",
-                attrs: {
-                  type: "text",
-                  placeholder: "Write your message here",
-                  disabled: _vm.session_block
-                }
-              })
+              : _c("li", [
+                  _c(
+                    "a",
+                    {
+                      attrs: { href: "#" },
+                      on: {
+                        click: function($event) {
+                          $event.preventDefault()
+                          return _vm.block($event)
+                        }
+                      }
+                    },
+                    [_vm._v("Block")]
+                  )
+                ]),
+            _vm._v(" "),
+            _c("li", [
+              _c(
+                "a",
+                {
+                  attrs: { href: "#" },
+                  on: {
+                    click: function($event) {
+                      $event.preventDefault()
+                      return _vm.clear($event)
+                    }
+                  }
+                },
+                [_vm._v("clear chat")]
+              )
             ])
           ]
         )
       ])
-    : _vm._e()
+    ]),
+    _vm._v(" "),
+    _c(
+      "div",
+      {
+        directives: [{ name: "chat-scroll", rawName: "v-chat-scroll" }],
+        staticClass: "panel-body chat-box"
+      },
+      _vm._l(_vm.chats, function(chat) {
+        return _c("p", { key: chat.message, staticClass: "panel-text" }, [
+          _vm._v(_vm._s(chat.message))
+        ])
+      })
+    ),
+    _vm._v(" "),
+    _c(
+      "form",
+      {
+        staticClass: "panel-footer",
+        on: {
+          submit: function($event) {
+            $event.preventDefault()
+            return _vm.send($event)
+          }
+        }
+      },
+      [
+        _c("div", { staticClass: "form-group" }, [
+          _c("input", {
+            staticClass: "form-control ",
+            attrs: {
+              type: "text",
+              placeholder: "Write your message here",
+              disabled: _vm.session_block
+            }
+          })
+        ])
+      ]
+    )
+  ])
 }
 var staticRenderFns = [
   function() {

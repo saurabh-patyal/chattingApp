@@ -1,12 +1,12 @@
 <template>
-<div class="panel panel-default " v-if="open">
+<div class="panel panel-default " >
                     <div class="panel-heading 
                     "><b :class="{'text-danger':session_block}">
-                    	Username
+                    	{{friend.name}}
                     	<span v-if="session_block">(Blocked)</span>
                     </b>
                     <!-- close button open -->
-                    <a href="" @click.prevent="close">
+                    <a href="" @click.prevent="close(friend)">
                     	<i class="fa fa-times pull-right " aria-hidden="true "></i>
                     </a>
                     <!-- close button ends here -->
@@ -49,10 +49,11 @@
 
 <script>
     export default {
+      props:['friend'],
     	data(){
     		return{
     			chats:[],
-    			open:true,
+    			
     			session_block:false
     		}
     	},
@@ -60,8 +61,8 @@
        	send(){
        		console.log('sended message')
        	},
-       	close(){
-       		this.open=false
+       	close(friend){
+       		friend.session.open=false
        	},
        	clear(){
        		this.chats=[]
