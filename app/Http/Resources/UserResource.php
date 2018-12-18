@@ -4,6 +4,8 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\Resource;
 use App\Models\Session;
+use App\Http\Resources\SessionResource;
+
 
 class UserResource extends Resource
 {
@@ -29,6 +31,6 @@ class UserResource extends Resource
     }
     private function session_details($id){
          $session=Session::whereIn('user1_id',[auth()->id(),$id])->whereIn('user2_id',[auth()->id(),$id])->first();
-         return $session;
+         return new SessionResource($session);
     }
 }

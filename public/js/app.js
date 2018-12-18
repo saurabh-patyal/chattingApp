@@ -43531,10 +43531,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
     createSession: function createSession(friend) {
       axios.post("/session/create", { friend_id: friend.id }).then(function (res) {
-        return friend.session = res.data;
+        friend.session = res.data.data, friend.session.open = true;
       });
     }
   },
+
   created: function created() {
     this.getFriends();
   },
