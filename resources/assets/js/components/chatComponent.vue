@@ -8,8 +8,13 @@
                     <div class="panel-body">
                         
                          <ul class="list-group">
-                              <a href="" v-for="friend in friends" @click.prevent="openChat(friend)"><li class="list-group-item" >{{friend.name}}</li>
-                              </a>
+                              
+                                <li class="list-group-item" v-for="friend in friends" @click.prevent="openChat(friend)" ><a href="">{{friend.name}}
+                                </a>
+                                  <i class="fa fa-circle pull-right text-success" v-if="friend.online"></i>
+                                </li>
+                                
+                              
                               
                             </ul>
                         
@@ -74,8 +79,25 @@
   created() {
     this.getFriends();
 
-    
+    Echo.join('Chat')
+    .here((users) => {
+        this.friends.forEach(friend=>{
+          users.forEach(user=>{
+            if(user.id==friend.id){
+              friend.online=true
+            }
 
+          })
+           
+        })
+
+    })
+    .joining((user) => {
+        this.friends.forEach(friend=>user.id==friend.id? friend.online=true: '')
+      })
+        .leaving((user) => {
+        this.friends.forEach(friend=>user.id==friend.id? friend.online=false: '')
+      })
     
   },
   components: { messageComponent }
