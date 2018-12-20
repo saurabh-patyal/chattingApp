@@ -24,7 +24,7 @@ class SessionEvent implements ShouldBroadcast
     {
         $this->session=$session;
         $this->session_by=$session_by;
-
+        $this->dontBroadcastToCurrentUser();
     }
 
     /**
