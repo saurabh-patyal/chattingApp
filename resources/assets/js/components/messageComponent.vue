@@ -77,13 +77,13 @@
        created(){
        	this.chats.push({message:'hey hi'},
        		
-       		{message:'hey how r you'},
-       		{message:'hey how r you'},
+       		{message:'hey'},
+       		{message:'hi'},
        		
-       		{message:'bottom chat3'},
-       		{message:'bottom chat3'},
-       		{message:'bottom chat3'},
-       		{message:'current message'},
+       		{message:'wassup'},
+       		{message:'meet'},
+       		{message:'at 1pm'},
+       		{message:'ok'},
 
        		)
        }

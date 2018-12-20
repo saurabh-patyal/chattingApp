@@ -44087,7 +44087,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     }
   },
   created: function created() {
-    this.chats.push({ message: 'hey hi' }, { message: 'hey how r you' }, { message: 'hey how r you' }, { message: 'bottom chat3' }, { message: 'bottom chat3' }, { message: 'bottom chat3' }, { message: 'current message' });
+    this.chats.push({ message: 'hey hi' }, { message: 'hey' }, { message: 'hi' }, { message: 'wassup' }, { message: 'meet' }, { message: 'at 1pm' }, { message: 'ok' });
   }
 });
 
